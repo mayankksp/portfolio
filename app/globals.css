@@ -1,18 +1,31 @@
 /* IMPORTED STYLES */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Oswald:wght@200;300;400;500;600;700&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @font-face {
   font-family: 'Wonder Magic';
-  src: url('/fonts/wonder-magic-free-trial.regular.ttf') format('truetype');
+  src: url('/fonts/Wonder Magic.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
+@layer components {
+  .hovering-animation {
+    animation: bounce 2s infinite;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
 
 /* GLOBAL STYLES */
 body {
@@ -23,116 +36,270 @@ body {
   border-width: 0;
 }
 
-/* HEADER STYLES */
-.dropdown:hover .dropdown-menu {
-  display: block;
-  background-color: #3251a3;
-  color: white;
-}
-
-.fixed-header {
-  position: fixed;
-  top: 264px;
-}
-
-.header-backdrop {
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.8);
-}
-
-/* MENU STYLES */
-.menuContainer {
-  transition: max-height 0.8s ease-in-out;
-  overflow: hidden;
-  max-height: 0;
-  background-color: coral;
-  opacity: 0.8;
-}
-
-.menuOpen {
-  max-height: 1000px;
-}
-
-.menuItem {
-  transition: background-color 0.2s ease-in-out;
-}
-
-.menuItem:hover {
-  background-color: #F29774;
-}
-
-/* ADDITIONAL STYLES */
-.div-after::after {
-  content: "";
-  background: url(https://d8it4huxumps7.cloudfront.net/uploads/images/6446493de8f5b_detail_header.svg);
+/* animation stage */
+.stage {
   position: absolute;
-  width: 50.375rem;
-  height: 100%;
+  top: 10px;
+  left: -300px;
   right: 0;
-  top: 19.593rem;
+  margin: 0 auto;
+  height: 100vh;
+  width: 100%;
+  max-width: 900px;
+  overflow-y: hidden;
+  z-index: 2;
+}
+
+/* parent is for vertical flight */
+.mariposa {
+  position: absolute;
+  transform: scale(0.1);
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 100px;
+  height: 100px;
+  opacity: 0; /* start at 0 so they don't appear while loading */
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+  animation: fly 4s infinite linear;
+  animation-delay: .125s;
+}
+
+.mariposa .mariposa-turn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 150px;
+  perspective: 1000px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  transform-origin: 50% 80%; /* turn from a natural center */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  animation: turn 3s infinite cubic-bezier(.31,.09,.77,1.5);
+  transform-style: preserve-3d;
+  filter: drop-shadow(50px 30px 10px rgba(0, 0, 0, 0.5));
+}
+
+.mariposa-flutter {
+  width: 0.7rem;
+  height: 8rem;
+  position: relative;
+  top: 0;
+  margin: 0 auto;
+  background: url("https://assets.codepen.io/2273448/butterfly-body.png");
   background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform-style: preserve-3d;
+  transform: rotateX(25deg) rotateY(5deg);
 }
 
-.div-backdrop {
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.custom-overlay:hover .default-text,
-.custom-overlay:hover .hover-link {
-  opacity: 0;
-}
-
-.custom-overlay::before,
-.custom-overlay:hover::before {
+.mariposa-flutter::before,
+.mariposa-flutter::after {
   position: absolute;
-  bottom: 144px;
-  left: 0;
-  width: 100%;
-  height: 144px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Oswald', sans-serif;
-  font-size: 32px;
-  color: #062639;
+  top: 5%;
+  margin: auto;
+  content: "";
+  height: 100%;
+  width: 250%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform-style: preserve-3d;
+  animation-delay: 0;
 }
 
-.custom-overlay:hover::before {
-  height: 240px;
-  content: '';
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(20px);
-  transform: translateY(144px);
+.mariposa-flutter::before {
+  background-image: url("https://assets.codepen.io/2273448/butterfly-wing.png");
+  transform-origin: 0% 50%;
+  animation: flutter-r 0.3s infinite ease-out;
+  left: 55%;
 }
 
-.hover-link {
+.mariposa-flutter::after {
+  background-image: url("https://assets.codepen.io/2273448/butterfly-wing-l.png");
+  transform-origin: 100% 50%;
+  animation: flutter-l 0.3s infinite ease-out;
+  right: 55%;
+}
+
+/* wing flutter - right wing */
+@keyframes flutter-r {
+  0%, 100% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(-40deg);
+  }
+}
+
+/* wing flutter - left wing */
+@keyframes flutter-l {
+  0%, 100% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(40deg);
+  }
+}
+
+/* horizontal motion and rotation */
+@keyframes turn {
+  0%, 100% {
+    transform: translateX(-20%) rotateZ(30deg);
+  }
+  25% {
+    transform: translateX(50%) rotateZ(-30deg);
+  }
+  50% {
+    transform: translateX(-80%) rotateZ(30deg);
+  }
+  75% {
+    transform: translateX(30%) rotateZ(-30deg);
+  }
+}
+
+/* vertical flight motion */
+@keyframes fly {
+  0% {
+    opacity: 0;
+    transform: translateY(20vh);
+  }
+  3%, 99% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(20vh);
+  }
+}
+
+.holder {
   position: absolute;
+  bottom: 278px;
+  left: 65px;
+  transform: scale(0.3);
+}
+
+.holder *, .holder *:before, .holder *:after {
+  position: absolute;
+  content: "";
+}
+
+.candle {
   bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 240px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
+  width: 150px;
+  height: 300px;
+  
+  
 }
 
-.default-text {
-  position: absolute;
+.thread {  
+  width: 6px;
+  height: 80px;
+  top: -17px;
+  left: 50%;
+  z-index: 1;
+  border-radius: 40% 40% 0 0;
+  transform: translateX(-50%);
+  background: #121212;
+  background: -moz-linear-gradient(#d6994a, #4b232c, #121212, black, #e8bb31 90%);
+  background: -webkit-linear-gradient(#d6994a, #4b232c, #121212, black, #e8bb31 90%);
+  background: -o-linear-gradient(#d6994a, #4b232c, #121212, black, #e8bb31 90%);
+  background: -ms-linear-gradient(#d6994a, #4b232c, #121212, black, #e8bb31 90%);
+  background: linear-gradient(#d6994a, #4b232c, #121212, black, #e8bb31 90%);
+}
+
+.flame {
+  width: 60px;
+  height: 10px;
+  left: 50%;
+  transform-origin: 50% 100%;
+  transform: translateX(-50%);
+  bottom: 100%;
+  border-radius: 50% 50% 20% 20%;
+  background: rgba(255, 255, 255, 1);
+  background: -moz-linear-gradient(white 80%, transparent);
+  background: -webkit-linear-gradient(white 80%, transparent);
+  background: -o-linear-gradient(white 80%, transparent);
+  background: -ms-linear-gradient(white 80%, transparent);
+  background: linear-gradient(white 80%, transparent);
+  animation: moveFlame 6s linear infinite, enlargeFlame 5s linear infinite;
+}
+
+.flame:before {
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50% 50% 20% 20%;
+  box-shadow: 0 0 15px 0 rgba(247, 93, 0, .4), 0 -6px 4px 0 rgba(247, 128, 0, .7);
+}
+
+@keyframes moveFlame {
+  0%, 100% {
+    transform: translateX(-50%) rotate(-6deg);
+  }
+  50% {
+    transform: translateX(-50%) rotate(2deg);
+  }
+}
+
+@keyframes enlargeFlame {
+  0%, 100% {
+    height: 160px;
+  }
+  50% {
+    height: 140px;
+  }
+}
+
+.glow {
+  width: 26px;
+  height: 60px;
+  border-radius: 50% 50% 35% 35%;
+  left: 50%;
+  top: -48px;
+  transform: translateX(-50%);
+  background: rgba(0, 133, 255, .7);
+  box-shadow: 0 -40px 30px 0 #dc8a0c, 0 40px 50px 0 #dc8a0c, inset 3px 0 2px 0 rgba(0, 133, 255, .6), inset -3px 0 2px 0 rgba(0, 133, 255, .6);
+}
+
+.glow:before {
+  width: 70%;
+  height: 60%;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: white;
-  font-family: 'Oswald', sans-serif;
-  color: #062639;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
 }
 
-.sticky-sidebar-shadow {
-  -webkit-box-shadow: 0px 0px 18px -6px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 0px 18px -6px rgba(0,0,0,0.75);
-  box-shadow: 0px 0px 18px -6px rgba(0,0,0,0.75);
+.blinking-glow {
+  width: 100px;
+  height: 180px;
+  left: 50%;
+  top: -55%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #ff6000;
+  -webkit-filter: blur(50px);
+  -moz-filter: blur(60px);
+  -o-filter: blur(60px);
+  -ms-filter: blur(60px);
+  filter: blur(60px);
+  animation: blinkIt .1s infinite;
 }
+
+@keyframes blinkIt {
+  50% { opacity: .8;}
+}
+
